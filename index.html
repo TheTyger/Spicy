@@ -14,6 +14,7 @@
         color:#333;
       }
       .level2{
+        font-size: 1.5rem;
         background-color: #d7b1b8;
         color:#333;
       }
@@ -29,116 +30,149 @@
         max-width:25%;
         max-height:25%;
       }
+      .selected {
+        border: 2px solid #3b0a12;
+        border-radius: 4px;
+      }
+      .notShown {
+        display:none;
+      }
     
     </style>
   </head>
   <body >
     <h1 style="color:#ccc;">Let's Fuck</h1>
-    <div class="container-fluid startup">
+    <div class="container-fluid startup" id="settingsPane">
         <div class="container text-center">
           <div class="row">
             <div class="col">
-                <input type="text" id="p1name" placeholder="Player 1" />
-            </div>
-            <div class="col">
+                <div class="row">
+                  <label>Name:</label><input type="text" id="p1name" placeholder="Player 1" value="Carrie" />
+              </div>
+              <div class="row">
                 <div class="form-check">
-                  <label class="form-check-label" for="flexCheckDefault">
-                   Woman?
-                  </label>
-                  <input class="form-check-input" type="checkbox" id="gender1" />
+                  <label>Short Sleeve Shirt</label><input type="checkbox" class="form-check-input" id="p1-Top-S" />
                 </div>
-            </div>
-            
-          </div>
-          <div class="container">
-          <div class="row">
-            <div class="col">
-            <div class="container">
-              <img src="img/blouse.png" class="img1"/> <br />
-            <label>Short Sleeve Top</label>  
               </div>
-            </div>
-            <div class="col">
-            <div class="container">
-              <img src="img/shirtllong.png" class="img1"/> <br />
-            <label>Long Sleeve Top</label>  
+              <div class="row">
+                <div class="form-check">
+                  <label>Long Sleeve Shirt</label><input type="checkbox" class="form-check-input" id="p1-Top-L" />
+                </div>
               </div>
-            </div>
-             <div class="col">
-            <div class="container">
-              <img src="img/bra.png" class="img1"/> <br />
-            <label>Bra</label>  
+              <div class="row">
+                <div class="form-check">
+                  <label>Bra</label><input type="checkbox" class="form-check-input" id="p1-Bra" />
+                </div>
               </div>
-            </div>
-            <div class="col">
-            <div class="container">
-              <img src="img/camisole.png" class="img1"/> <br />
-            <label>Undershirt</label>  
+              <div class="row">
+                <div class="form-check">
+                  <label>Short Pants/Skirt</label><input type="checkbox" class="form-check-input" id="p1-Bottom-S" />
+                </div>
               </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-            <div class="container">
-              <img src="img/skirt.png" class="img1"/> <br />
-            <label>Bottoms (short)</label>  
+              <div class="row">
+                <div class="form-check">
+                  <label>Long Pants/Skirt</label><input type="checkbox" class="form-check-input" id="p1-Bottom-L" />
+                </div>
               </div>
-            </div>
-            <div class="col">
-            <div class="container">
-              <img src="img/trousers.png" class="img1"/> <br />
-            <label>Bottoms (long)</label>  
+              <div class="row">
+                <div class="form-check">
+                  <label>Panties</label><input type="checkbox" class="form-check-input" id="p1-Panties" />
+                </div>
               </div>
-            </div>
-             <div class="col">
-            <div class="container">
-              <img src="img/thong.png" class="img1"/> <br />
-            <label>Thong</label>  
+              <div class="row">
+                <div class="form-check">
+                  <label>Thong</label><input type="checkbox" class="form-check-input" id="p1-Thong" />
+                </div>
               </div>
-            </div>
-            <div class="col">
-            <div class="container">
-              <img src="img/underwear.png" class="img1"/> <br />
-            <label>Panties</label>  
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-            <div class="container">
-              <img src="img/high-heels.png" class="img1"/> <br />
-            <label>Shoes</label>  
-              </div>
-            </div>
-            <div class="col">
-                          </div>
-            
-             <div class="col">
-            
               
             </div>
             <div class="col">
-            
+              <div class="row">
+                  <label>Name:</label><input type="text" id="p2name" placeholder="Player 2" value="Nick" />
               </div>
+              <div class="row">
+                <div class="form-check">
+                  <label>Short Sleeve Shirt</label><input type="checkbox" class="form-check-input" id="p2-Top-S" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-check">
+                  <label>Long Sleeve Shirt</label><input type="checkbox" class="form-check-input" id="p2-Top-L" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-check">
+                  <label>Shorts</label><input type="checkbox" class="form-check-input" id="p2-Bottom-S" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-check">
+                  <label>Pants</label><input type="checkbox" class="form-check-input" id="p2-Bottom-L" />
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-check">
+                  <label>Underwear</label><input type="checkbox" class="form-check-input" id="p2-Briefs" />
+                </div>
+              </div>
+              
             </div>
+            </div>
+          
+        <div class="row">
+          <div class="col"></div>
+          <div class="col">
+            <button id="Gamestart" onclick="game.run()">Let's get Sexy</button>
           </div>
-          </div>
-        
-          <div class="row">
-            Player 2
+          <div class="col"></div>
+        </div>
           </div>
         </div>
     </div>
-    <div class="container-fluid invisible">
+    <div class="container-fluid notShown">
         cards
     </div>
-    <div class="container-fluid invisible">
-        roller
+    <div class="container-fluid text-center level2 notShown" id="ActionRoller">
+      <div class="row align-items-center">
+        <div class="col" id="arname">Who</div>
+        <div class="col" id="aract">What</div>
+        <div class="col" id="arpart">Where</div>
+        <div class="col">for <label id="ardur">how many</label> Minutes</div>
+      </div>
+      <div class="row align-items-center">
+        <div class="col"><Button onclick="game.handlePlayerTurn('roll')">Roll!</Button></div>
+      </div>
+      <div class="row align-items-center">
+        <!-- Timer -->
+        <div class="container mt-5">
+  <div class="card mx-auto shadow-sm" style="max-width: 400px;">
+    <div class="card-body text-center">
+      <h5 class="card-title mb-3 text-muted fw-semibold text-uppercase">Time Remaining</h5>
+      
+      <!-- Big Timer Display -->
+      <div id="timerDisplay" class="display-4 fw-bold text-primary mb-3">05:00</div>
+      
+      <!-- Bootstrap Progress Bar -->
+      <div class="progress mb-4" style="height: 10px;">
+        <div id="timerBar" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 100%"></div>
+      </div>
+      
+      <!-- Action Controls -->
+      <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+        <button id="startBtn" class="btn btn-success px-4" onclick="startTimer()">Start</button>
+        <button id="pauseBtn" class="btn btn-warning px-4 text-white" onclick="pauseTimer()" disabled>Pause</button>
+        <button id="resetBtn" class="btn btn-secondary px-4" onclick="resetTimer()">Reset</button>
+      </div>
     </div>
-    <div class="container-fluid invisible">
+  </div>
+</div>
+      </div>
+    </div>
+    <div class="container-fluid notShown">
         timer
     </div>
     <script src="js/bootstrap.js"></script>
+    <script src="gamelogic/timer.js"></script>
     <script src="gamelogic/player.js"></script>
   </body>
 </html>

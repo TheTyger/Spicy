@@ -2,14 +2,16 @@ class Game {
   constructor() {
     this.state = 'START';
     this.turnCount = 0;
-    this.level = 1;
+    this.round = 1;
+    this.players;
+    this.turn = 0;
   }
 //TODO: Convert to iterate over players based on init 
   async run() {
     while (this.state !== 'GAME_OVER') {
       switch (this.state) {
         case 'START':
-          this.initializeGame();
+          this.players = this.initializeGame();
           break;
 
         case 'PLAYER_TURN':
@@ -26,8 +28,11 @@ class Game {
   }
 //TODO: Convert to initialize players and add to the game opts
   initializeGame() {
-    console.log("Game started! Player goes first.");
+    console.log("Initializing players");
+    var p1 = new PLAYER("Carrie", "f", ["Top-S", "Bra", "Thong", "Bottom-S"]);
+    var p2 = new PLAYER("Nick", "m", ["Top-S", "Briefs", "Bottom-L"]);
     this.state = 'PLAYER_TURN';
+    return [p1,p2];
   }
 //TODO: Build logic for player turn here
   handlePlayerTurn() {
@@ -47,7 +52,7 @@ class Game {
   }
 
   checkWinCondition() {
-    const isGameOver = Math.random() > 0.8; // Random 20% chance to end game
+    const isGameOver = Math.random() > 3.8; // Random 20% chance to end game
     if (isGameOver) {
       this.state = 'GAME_OVER';
     } else {
@@ -60,4 +65,4 @@ class Game {
 //TODO: Move game start to button
 // Start the game
 const game = new Game();
-game.run();
+// game.run();

@@ -96,7 +96,7 @@ class Clothing {
     }
     // number listed is min-round
     static onSkin = ["Kiss","Lick","Suck","Blow_On","Nibble","Bite"];
-    static overClothes = ["Pinch","Massage","Stroke","Caress","Rub","Squeeze","Embrace"];
+    static overClothes = ["Pinch","Massage","Stroke","Caress","Rub","Squeeze","Embrace", "Tease"];
     static position = ["Standing", "Sitting","Lay_On_Back", "Lay_On_Stomach","Sit_On_Lap", "Straddle"];
     static extra = ["Blindfolded", "Tied_Up", "Silent", "Loud", "Ice", "Location"];
     static duration = [1,2,3,5,0];
@@ -137,3 +137,86 @@ class Clothing {
 
 // WORKLIST
 // Build Action list, restrictions, timers, round escalation
+
+class Game {
+  constructor() {
+    this.state = 'START';
+    this.turnCount = 0;
+    this.round = 1;
+    this.players;
+    this.turn = 0;
+  }
+//TODO: Convert to iterate over players based on init 
+  run() {
+    // Update UI to play mode
+    document.getElementById("settingsPane").classList.add("notShown");
+    document.getElementById("ActionRoller").classList.remove("notShown");
+    //Use all checkbox Ids to build out initialization array.
+    var p1ClothingIdArray = ["p1-Top-S", "p1-Top-L", "p1-Bra", "p1-Bottom-S", "p1-Bottom-L", "p1-Panties", "p1-Thong"];
+    var p1cList = [];
+    for (var i=0;i<p1ClothingIdArray.length;i++){
+        if (document.getElementById(p1ClothingIdArray[i]).checked)
+        p1cList.push(p1ClothingIdArray[i].substring(3, p1ClothingIdArray[i].length));
+    }
+    console.log(p1cList);
+    var p2ClothingIdArray = ["p2-Top-S", "p2-Top-L", "p2-Bottom-S", "p2-Bottom-L", "p2-Briefs"];
+    var p2cList = [];
+    for (var i=0;i<p2ClothingIdArray.length;i++){
+        if (document.getElementById(p2ClothingIdArray[i]).checked)
+        p2cList.push(p2ClothingIdArray[i].substring(3, p2ClothingIdArray[i].length));
+    }
+    console.log(p2cList);
+
+    var p1 = new Player(document.getElementById("p1name").value, "f", p1cList);
+    p1.setCoverage();
+    var p2 = new Player(document.getElementById("p2name").value, "m", p2cList);
+    p2.setCoverage();
+    this.players = [p1,p2];
+
+  }
+
+//TODO: Build logic for player turn here
+  handlePlayerTurn(type) {
+      var pDo;
+      var pRe;
+      if (this.turn == 0){
+        pDo = this.players[0];  
+        pRe = this.players[1];
+      } else {
+        pDo = this.players[1];  
+        pRe = this.players[0];
+      }
+    switch(type){
+        case "roll":
+            var rollResult = RollActions.Roll(pDo, pRe, this.round, {});
+            console.log(rollResult);
+            document.getElementById("arname").textContent = rollResult.Actor;
+            document.getElementById("arpart").textContent = rollResult.Bodypart.replace("_", " ");
+            document.getElementById("ardur").textContent = rollResult.Duration;
+            document.getElementById("aract").textContent = rollResult.Action.replace("_", " ");
+            document.getElementById("timerDisplay").textContent = "0" + rollResult.Duration + ":00";
+            totalSeconds = rollResult.Duration * 60;
+            resetTimer();
+            
+            //do the action roll
+            break;
+        case "strip":
+            //remove clothing from player
+            break;
+        case "special":
+            //other?
+            break;
+    }
+    if (this.turn == 0) this.turn = 1;
+    else this.turn = 0;
+    //advance turn
+    //check advance round
+
+  }
+
+}
+//TODO: Move game start to button
+// Start the game
+const game = new Game();
+//game.run();
+
