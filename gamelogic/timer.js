@@ -32,7 +32,7 @@ function updateDisplay() {
   }
 }
 
-function startTimer() {
+function startTimer(sound) {
   if (timerInterval !== null) return; // Prevent multiple intervals running
   requestWakeLock();
   startBtn.disabled = true;
@@ -44,6 +44,8 @@ function startTimer() {
       timerInterval = null;
       display.textContent = "00:00";
       progressBar.style.width = "0%";
+      var aud = new Audio(sound);
+      aud.play();
       alert("Time is up!");
       resetTimer();
       return;

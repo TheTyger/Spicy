@@ -137,7 +137,7 @@ class Clothing {
     static overClothes = ["Knead","Massage","Stroke","Caress","Rub","Squeeze","Embrace", "Tease", "Worship", "Feel", "Graze"];
     static position = ["Standing", "Sitting","Lay","Mount", "Straddle","Ride"];
     static extra = ["A_Blindfold", "Restraints", "No_Sounds", "Dirty_Talk", "Ice", "Oil/Syrup/etc" ];
-    static duration = [1,2,3,0,1,1,1,2,2,3];
+    static duration = [1,2,3,5,1,1,1,2,2,3];
 
     static Roll(actor, target, round, opt){
         var avAction;
