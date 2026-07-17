@@ -46,6 +46,7 @@ function startTimer(sound) {
       progressBar.style.width = "0%";
       var aud = new Audio(sound);
       aud.play();
+      setTimeout(100);
       alert("Time is up!");
       resetTimer();
       return;
