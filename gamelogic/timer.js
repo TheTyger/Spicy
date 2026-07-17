@@ -34,7 +34,7 @@ function updateDisplay() {
 
 function startTimer() {
   if (timerInterval !== null) return; // Prevent multiple intervals running
-  
+  requestWakeLock();
   startBtn.disabled = true;
   pauseBtn.disabled = false;
 
@@ -55,6 +55,7 @@ function startTimer() {
 }
 
 function pauseTimer() {
+    releaseWakeLock();
   clearInterval(timerInterval);
   timerInterval = null;
   startBtn.disabled = false;

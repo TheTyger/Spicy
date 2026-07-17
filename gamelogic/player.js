@@ -1,3 +1,30 @@
+let wakeLock = null;
+
+async function requestWakeLock() {
+  try {
+    wakeLock = await navigator.wakeLock.request('screen');
+    console.log('Screen Wake Lock is active!');
+  } catch (err) {
+    console.error(`Wake lock request failed: ${err.name}, ${err.message}`);
+  }
+}
+
+function releaseWakeLock() {
+  if (wakeLock !== null) {
+    wakeLock.release()
+      .then(() => { wakeLock = null; })
+      .catch(err => console.error(err));
+  }
+}
+
+// Automatically re-acquire the lock if the page becomes visible again
+document.addEventListener('visibilitychange', async () => {
+  if (wakeLock !== null && document.visibilityState === 'visible') {
+    await requestWakeLock();
+  }
+});
+
+
 // Main class to hold current player info
 class Player {
     constructor(name, sex, clothing){
@@ -5,7 +32,16 @@ class Player {
         this.sex = sex;
         this.clothing = clothing;
         this.body = new Body(this.sex);
-
+        if (sex == "m"){
+            this.iWantto ="I want to cover you in Whipped Cream and lick it slowly off";
+            this.iWantYouto = "I want you to put on a pair of my underwear and give me a lapdance, then eat my pussy until I cum";
+            this.IWantUsto = "I want to drench us in oil wrestling until one of us gets pinned, then shower and clean eachother off";
+        } else {
+            this.iWantto = "I want to tie you up, blindfold you, and tease you until you beg me to do anything I want to you.";
+            this.iWantYouto = "I want you to pin my face down with your legs and fuck my face until you can't take it anymore. Smother me with your delicious pussy.";
+            this.IWantUsto = "I want us to move from room to room finding a place for me to make you cum in each room. Let's make every part of the house a sexy memory.";
+        }
+        
     }
     getName() {return this.name;}
     getSex() {return this.sex;}
@@ -50,14 +86,14 @@ class Player {
 
 class Body {
     constructor (s) {
-        this.head = {"Scalp":0, "Neck":0, "Temples":0, "Face":0, "Ears":0, "Lips":0};
-        this.limbs = {"Upper_Arms":0, "Forearms":0, "Wrists":0, "Hands":0, "Fingers":0, "Lower_Thigh":0, "Calves":0, "Ankles":0, "Feet":0, "Toes":0 };
+        this.head = {"Neck":0, "Head":0, "Face":0, "Ears":0, "Lips":0};
+        this.limbs = {"Upper_Arms":0, "Forearms":0, "Hands":0, "Lower_Thigh":0, "Calves":0, "Feet":0 };
         
         if (s == "m") {
-            this.torso = {"Upper_Back":0, "Lower_Back":0, "Collar":0, "Chest":0, "Nipples":0, "Abs":0, "Ribs":0, "Sides":0, "Navel":0};
+            this.torso = {"Upper_Back":0, "Lower_Back":0, "Collarbone":0, "Chest":0, "Nipples":0, "Abs":0, "Ribs":0};
             this.groin = {"Butt":0, "Hips":0, "Balls":0, "Pubic_Bone":0, "Inner_Thigh":0, "Cock":0};
         } else {
-            this.torso = {"Upper_Back":0, "Lower_Back":0, "Collar":0, "Tits":0, "Nipples":0, "Abs":0, "Ribs":0, "Sides":0, "Navel":0};
+            this.torso = {"Upper_Back":0, "Lower_Back":0, "Collarbone":0, "Breasts":0, "Nipples":0, "Abs":0, "Ribs":0};
             this.groin = {"Butt":0, "Hips":0, "Clit":0, "Pubic_Bone":0, "Inner_Thigh":0, "Pussy":0};   
         }
         
@@ -70,6 +106,8 @@ class Clothing {
     }
     static getCoverage(type) {
         switch(type){
+            case "Tank":
+                return ["Upper_Back", "Lower_Back", "Chest", "Nipples", "Abs", "Ribs"];
             case "Top-L":
                 return ["Torso", "Upper_Arms", "Forearms"];
             case "Top-S":
@@ -95,20 +133,20 @@ class Clothing {
     constructor(){
     }
     // number listed is min-round
-    static onSkin = ["Kiss","Lick","Suck","Blow_On","Nibble","Bite"];
-    static overClothes = ["Pinch","Massage","Stroke","Caress","Rub","Squeeze","Embrace", "Tease"];
-    static position = ["Standing", "Sitting","Lay_On_Back", "Lay_On_Stomach","Sit_On_Lap", "Straddle"];
-    static extra = ["Blindfolded", "Tied_Up", "Silent", "Loud", "Ice", "Location"];
-    static duration = [1,2,3,5,0];
+    static onSkin = ["Kiss","Lick","Suck","Blow_On","Nibble","Use", "Savor", "Taste", "Explore"];
+    static overClothes = ["Knead","Massage","Stroke","Caress","Rub","Squeeze","Embrace", "Tease", "Worship", "Feel", "Graze"];
+    static position = ["Standing", "Sitting","Lay","Mount", "Straddle","Ride"];
+    static extra = ["A_Blindfold", "Restraints", "No_Sounds", "Dirty_Talk", "Ice", "Oil/Syrup/etc" ];
+    static duration = [1,2,3,0,1,1,1,2,2,3];
 
     static Roll(actor, target, round, opt){
         var avAction;
         var aName = actor.name;
         var tName = target.name;
-        var rnd1Body = {...target.body.limbs, ...target.body.head};
+        var rnd1Body = {...target.body.limbs, ...target.body.head, ...target.body.torso};
         var rnd2Body = {...target.body.limbs, ...target.body.head, ...target.body.torso,  ...target.body.groin};
         var tbody;
-        if (round > 1) {
+        if (round <= 1) {
             tbody = rnd1Body
         } else{
             tbody = rnd2Body
@@ -122,10 +160,10 @@ class Clothing {
             var avAction = [...this.overClothes];
         }
         var actionRoll = avAction[Math.floor(Math.random()*avAction.length)];
-        var dur = this.duration[Math.floor(Math.random()*5)];
-        var pos = this.position[Math.floor(Math.random()*6)];
-        var xxxtra = this.extra[Math.floor(Math.random()*6)];
-        return  {Actor:aName, Target:tName, Action:actionRoll, Bodypart:bodyPart, Duration:dur, Position:pos, Spicy:xxxtra};
+        var dur = this.duration[Math.floor(Math.random()*this.duration.length)];
+        var pos = this.position[Math.floor(Math.random()*this.position.length)];
+        var xxxtra = this.extra[Math.floor(Math.random()*this.extra.length)];
+        return  {Actor:aName, Target:tName, Action:actionRoll, Bodypart:bodyPart, Duration:dur, Position:pos, Spicy:xxxtra, Round:round};
         // player picks between an a or b card (gives opt)
         // opts direct the randomizer
         // roll returns "points"
@@ -145,6 +183,8 @@ class Game {
     this.round = 1;
     this.players;
     this.turn = 0;
+    this.prizes = 0;
+    // mitigate luck here to ensure more variety
   }
 //TODO: Convert to iterate over players based on init 
   run() {
@@ -159,7 +199,7 @@ class Game {
         p1cList.push(p1ClothingIdArray[i].substring(3, p1ClothingIdArray[i].length));
     }
     console.log(p1cList);
-    var p2ClothingIdArray = ["p2-Top-S", "p2-Top-L", "p2-Bottom-S", "p2-Bottom-L", "p2-Briefs"];
+    var p2ClothingIdArray = ["p2-Top-S", "p2-Top-L", "p2-Bottom-S", "p2-Bottom-L", "p2-Briefs", "p2-Tank"];
     var p2cList = [];
     for (var i=0;i<p2ClothingIdArray.length;i++){
         if (document.getElementById(p2ClothingIdArray[i]).checked)
@@ -176,7 +216,7 @@ class Game {
   }
 
 //TODO: Build logic for player turn here
-  handlePlayerTurn(type) {
+  handlePlayerTurn(type, opts) {
       var pDo;
       var pRe;
       if (this.turn == 0){
@@ -188,27 +228,112 @@ class Game {
       }
     switch(type){
         case "roll":
+            document.getElementById("prize").classList.add("notShown");
+            document.getElementById("ActionRoller").classList.remove("notShown");
+            // check here to see if we route into special instead
             var rollResult = RollActions.Roll(pDo, pRe, this.round, {});
             console.log(rollResult);
             document.getElementById("arname").textContent = rollResult.Actor;
             document.getElementById("arpart").textContent = rollResult.Bodypart.replace("_", " ");
             document.getElementById("ardur").textContent = rollResult.Duration;
             document.getElementById("aract").textContent = rollResult.Action.replace("_", " ");
-            document.getElementById("timerDisplay").textContent = "0" + rollResult.Duration + ":00";
-            totalSeconds = rollResult.Duration * 60;
+            if (rollResult.Duration == 0) {
+                document.getElementById("ardur").textContent = "Any Number of";
+                document.getElementById("timerDisplay").textContent = "99:99";
+                totalSeconds = 3600;
+            }
+            else {
+                document.getElementById("ardur").textContent = rollResult.Duration;
+                document.getElementById("timerDisplay").textContent = "0" + rollResult.Duration + ":00";
+                totalSeconds = rollResult.Duration * 60;
+            }
+            if (this.round > 3){
+                 document.getElementById("arextra").textContent = rollResult.Spicy.replace("_", " ");
+            };
+            // if (this.round> 5) {
+            //     document.getElementById("arextra").textContent = rollResult.Spicy.replace("_", " ");
+            // }
+            
             resetTimer();
             
             //do the action roll
             break;
         case "strip":
+            var xxx = Math.floor(Math.random()*2);
+            var artRem;
+            this.players[xxx];
+            
+            if (this.players[xxx].clothing.length == 0) {
+                this.handlePlayerTurn("special", {Player:this.players[xxx], Reason:"naked" });
+            } else {
+                if(this.players[xxx].clothing.includes("Top-L")) {
+                    artRem = "Top";
+                    this.players[xxx].clothing.splice(this.players[xxx].clothing.indexOf("Top-L"), 1);
+                } else if(this.players[xxx].clothing.includes("Top-S")) {
+                    artRem = "Shirt";
+                    this.players[xxx].clothing.splice(this.players[xxx].clothing.indexOf("Top-S"), 1);
+                } else if(this.players[xxx].clothing.includes("Bottom-L")) {
+                    artRem = "Skirt/Pants";
+                    this.players[xxx].clothing.splice(this.players[xxx].clothing.indexOf("Bottom-L"), 1);
+                } else if(this.players[xxx].clothing.includes("Bottom-S")) {
+                    artRem = "Skirt/Shorts";
+                    this.players[xxx].clothing.splice(this.players[xxx].clothing.indexOf("Bottom-S"), 1);
+                } else if(this.players[xxx].clothing.includes("Tank")) {
+                    artRem = "Tank-top";
+                    this.players[xxx].clothing.splice(this.players[xxx].clothing.indexOf("Tank"), 1);
+                } else if(this.players[xxx].clothing.includes("Bra")) {
+                    artRem = "Bra";
+                    this.players[xxx].clothing.splice(this.players[xxx].clothing.indexOf("Bra"), 1);
+                } else if(this.players[xxx].clothing.includes("Panties")) {
+                    artRem = "Panties";
+                    this.players[xxx].clothing.splice(this.players[xxx].clothing.indexOf("Panties"), 1);
+                } else if(this.players[xxx].clothing.includes("Thong")) {
+                    artRem = "Thong";
+                    this.players[xxx].clothing.splice(this.players[xxx].clothing.indexOf("Thong"), 1);
+                } else if(this.players[xxx].clothing.includes("Briefs")) {
+                    artRem = "Underwear";
+                    this.players[xxx].clothing.splice(this.players[xxx].clothing.indexOf("Briefs"), 1);
+                }
+                alert(this.players[xxx].name + " Remove your " + artRem);
+                this.players[xxx].setCoverage();
+            }
+            console.log(this.players[xxx]);
+
             //remove clothing from player
+            // If both players are totally naked, move to special
             break;
         case "special":
+            // if (this.players[0].clothing.length == 0 && this.players[1].clothing.length == 0 && this.prizes > 2) {
+            //     //both players are naked, load a group of 10/10 options
+            // } else
+            // TODO: something else here for more fun?
+             if (opts.Player.clothing.length == 0) {
+                //someone is naked and ready to be used
+                document.getElementById("prize").classList.remove("notShown");
+                document.getElementById("ActionRoller").classList.add("notShown");
+                document.getElementById("iwant").textContent = opts.Player.iWantto;
+                document.getElementById("iwantyou").textContent = opts.Player.iWantYouto;
+                document.getElementById("iwantus").textContent = opts.Player.IWantUsto;
+                document.getElementById("prizeRnd").textContent = opts.Player.name;
+                this.prizes++;
+            };
+            
             //other?
             break;
     }
     if (this.turn == 0) this.turn = 1;
-    else this.turn = 0;
+    else {
+        this.turn = 0;
+        this.turnCount++;
+    }
+    if (this.turnCount == 5) {
+        if (this.turn == 0) this.turn = 1;
+        else this.turn = 0;
+        this.turnCount = 0;
+        this.round++;
+        // roll to see if we go to strip or special
+        this.handlePlayerTurn("strip");
+    }
     //advance turn
     //check advance round
 

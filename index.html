@@ -42,6 +42,7 @@
   </head>
   <body >
     <h1 style="color:#ccc;">Let's Fuck</h1>
+    <!--Game Setup Page (Names and clothes)-->
     <div class="container-fluid startup" id="settingsPane">
         <div class="container text-center">
           <div class="row">
@@ -102,6 +103,10 @@
               </div>
               <div class="row">
                 <div class="form-check">
+                  <label>Undershirt</label><input type="checkbox" class="form-check-input" id="p2-Tank" />
+                </div>
+              <div class="row">
+                <div class="form-check">
                   <label>Shorts</label><input type="checkbox" class="form-check-input" id="p2-Bottom-S" />
                 </div>
               </div>
@@ -129,9 +134,51 @@
           </div>
         </div>
     </div>
-    <div class="container-fluid notShown">
-        cards
+    <!--Sexy Cards Page-->
+    <div class="container-fluid text-center notShown level3" id="prize">
+      <div class="row align-items-center">
+        <div class="col">
+          <label id="prizeRnd"></label>
+          <label> is all yours...</label>
+        </div>
+      </div>
+      <div class="row align-items-center">
+        <div class="col">
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">I Want To</h5>
+              <h6 class="card-subtitle mb-2 text-body-secondary">Taking my Prize</h6>
+              <p class="card-text" id="iwant">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+          </div>
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">I Want You To</h5>
+              <h6 class="card-subtitle mb-2 text-body-secondary">Give me my prize</h6>
+              <p class="card-text" id="iwantyou">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">I Want Us To</h5>
+              <h6 class="card-subtitle mb-2 text-body-secondary">The best prize is shared</h6>
+              <p class="card-text" id="iwantus">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            </div>
+          </div>
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">Let's keep going</h5>
+              <h6 class="card-subtitle mb-2 text-body-secondary">This is just too fun</h6>
+              <p class="card-text">The game is enough prize right now, Let's just keep rolling!</p>
+              <button onclick="game.handlePlayerTurn('roll')">Back to the Game!</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <!-- Roll and Timer Page-->
     <div class="container-fluid text-center level2 notShown" id="ActionRoller">
       <div class="row align-items-center">
         <div class="col" id="arname">Who</div>
@@ -140,7 +187,12 @@
         <div class="col">for <label id="ardur">how many</label> Minutes</div>
       </div>
       <div class="row align-items-center">
+        <div class="col">
+          <label>With:</label>
+          <label id="arextra">...</label>
+        </div>
         <div class="col"><Button onclick="game.handlePlayerTurn('roll')">Roll!</Button></div>
+        <div class="col" id="arpos"></div>
       </div>
       <div class="row align-items-center">
         <!-- Timer -->
@@ -169,7 +221,8 @@
       </div>
     </div>
     <div class="container-fluid notShown">
-        timer
+        Game type 2?
+        Turn Start - Choose action, roll, or other games as I work them out
     </div>
     <script src="js/bootstrap.js"></script>
     <script src="gamelogic/timer.js"></script>
